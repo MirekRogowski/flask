@@ -38,11 +38,6 @@ class Manager:
                 for item in line[1]:
                     f.write(f"{item}\n")
 
-    def write_error_to_file(self):
-        with open("error.txt", "a") as e:
-            for line in self.error:
-                e.write(f"\n{datetime.datetime.now().strftime('%Y-%m-%d - %H:%M:%S')} - {line}")
-
     def check_warehouse(self, product, quantity):
         if product in self.warehouse:
             self.warehouse[product] += quantity  # add quantity to warehouse
@@ -66,16 +61,6 @@ class Manager:
                 index += qty_param + 1
             else:
                 return f"Pusty plik"
-
-
-    def print_info(self, action):
-        print(f"{action} - balance: ", self.balance)
-        print(f"{action} - warehouse: ", self.warehouse)
-        print(f"{action} - logs: ", self.logs)
-        print(f"{action} - data: ", self.data , type(self.data))
-        print(f"{action} - error: ", self.error)
-        print(f"{action} - actions: ", self.actions)
-        print(f"{action} - action_param: ", self.action_param )
 
 
 manager = Manager()
@@ -127,21 +112,6 @@ def status_warehouse(item_store):
             print(f"  - {item} : {manager.warehouse[item]} sztuk")
         else:
             print(f"  - {item} : brak poyzcji w magazynie")
-
-
-@manager.assign("konto")
-def check_balance():
-    print(f"\nStan konta wynosi: {manager.balance} ")
-
-
-@manager.assign("przeglad")
-def display_log(first, last):
-    try:
-        while first <= last:
-            print(f"Akcja nr {first} - {manager.logs[first - 1]}")
-            first += 1
-    except IndexError:
-        print("Koniec")
 
 
 manager.transform_data()
