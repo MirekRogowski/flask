@@ -1,0 +1,55 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <div >
+        <h3>Saldo</h3>
+        <form method="post" action='/response'>
+            <fieldset class ="form-ggroup">
+                    <label class="form-label">Podaj kwotę:</label>
+                    <input class="form-control" type="text" name="income" placeholder="wpisz kwotę">
+                    <label class="form-label">Komentarz:</label>
+                    <input class="form-control" type="text" name="comment" placeholder="wpisz komentarz"><br>
+                    <button type="submit" class="btn btn-secondary">Wprowadź saldo</button>
+
+             </fieldset>
+        </form>
+    </div>
+    <br><br>
+    <div >
+        <h3>Kupno</h3>
+        <form method="post" action='/response_buy'>
+            <fieldset class ="form-ggroup">
+                    <label class="form-label">Wpisz towar:</label>
+                    <input class="form-control" type="text" name="item"  placeholder="wpisz towar">
+                    <label class="form-label">Cena zakupu:</label>
+                    <input class="form-control" type="number"  name="price" placeholder="cana sprzedaży">
+                    <label class="form-label">Ile:</label>
+                    <input class="form-control" type="number" name="quantity" placeholder="ile"><br>
+                    <button type="submit" class="btn btn-secondary">Zakup</button>
+            </fieldset>
+        </form>
+    </div>
+    <br><br>
+    <div >
+        <h3>Sprzedaż</h3>
+        <form method="post" action='/response_sale'>
+            <fieldset class ="form-ggroup">
+                    <label class="form-label">Wybierz towar:</label>
+                    <select class="form-select" aria-label="Default select example" name="item">
+                      <option selected>Wybierz pozycję do sprzedaży</option>
+                          {% for key, value in cargo.items() %}
+                            <option value="{{ key }}">{{ key }} -  {{ value }}</option>
+                          {% endfor %}
+                    </select>
+                    <label class="form-label">Cena sprzedaży:</label>
+                    <input class="form-control" type="number" name="price"  placeholder="cana zakupu">
+                    <label class="form-label">Ile:</label>
+                    <input class="form-control" type="number" name="quantity" placeholder="ile"><br>
+                    <button type="submit" class="btn btn-secondary">Sprzedaj</button>
+             </fieldset>
+        </form>
+    </div>
+
+
+{% endblock %}
+
+
