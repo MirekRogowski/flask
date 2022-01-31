@@ -1,0 +1,8 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <h3>Dodano {{ income }} {{ comment }}</h3>
+    <br><br>
+    <form action='/'>
+    <button type="submit" class="btn btn-secondary">Powrót</button>
+    </form>
+{% endblock %}
