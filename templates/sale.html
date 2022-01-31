@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <div >
+        <h3>Formularz sprzedaży:</h3>
+        <form method="post" action='/sale_response'>
+            <fieldset class ="form-ggroup">
+                    <label class="form-label">Nazwa produktu:</label>
+                     <select class="form-select" aria-label="Default select example" name="item">
+                        <option selected>Wybierz produkt do sprzedaży</option>
+                        {% for key, value in cargo.items() %}
+                            {% if value > 0 %}
+                                <option value="{{ key }}">{{ key }} -  {{ value }} szt.</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                    <label class="form-label">Cena jednostkowa:</label>
+                    <input class="form-control" type="number" name="price"  placeholder="wpisz cenę jednostkowa">
+                    <label class="form-label">Liczba sztuk:</label>
+                    <input class="form-control" type="number" name="quantity" placeholder="wpisz liczbę sztuk"><br>
+                    <button type="submit" class="btn btn-secondary">Sprzedaj</button>
+             </fieldset>
+        </form>
+    </div>
+{% endblock %}
