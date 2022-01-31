@@ -1,14 +1,20 @@
 {% extends 'layout.html' %}
 {% block content %}
-<h3>Stan magazynu:</h3>
-    {% for key, value in cargo.items() %}
-        {% if value > 0 %}
-            <option value="{{ key }}">{{ key }} -  {{ value }} szt.</option>
-        {% endif %}
-    {% endfor %}
+    <h3>Stan magazynu:</h3>
+    {% if cargo %}
+        {% for key, value in cargo.items() %}
+            {% if value > 0 %}
+                <option value="{{ key }}">{{ key }} -  {{ value }} szt.</option>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+            Magazyn pusty
+    {% endif %}
     <br><br>
     <h3>Stan konta:</h3>
     {{ balance }} zł
+    <br><br>
+    <h3>Program czyta i zapisuje dane w pliku "file.txt"</h3>
 {% endblock %}
 
 
