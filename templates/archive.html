@@ -1,20 +1,27 @@
 {% extends 'layout.html' %}
 {% block content %}
 
-      <h3>Operacje wykonane w magazynie</h3>
+      <h3>Operacje wykonane w magazynie:</h3>
 
             <dl>
             {% set count = 1 %}
             {% for item in log %}
-            <p><dl>Log nr {{ loop.index }}:
-                {% if item[0] == "saldo" %}
-                    <dt>{{ item[0] }} </dt> {{ item[1][0] }} {{item[1][1] }}
-                {% else %}
-                    <dt>{{ item[0] }} </dt> {{ item[1][0] }} {{item[1][1] }} {{ item[1][2] }}
+                {% if  line_from <= loop.index <= line_to %}
+                    <p><dl>
+                    Log nr {{ loop.index }}:
+                    {% if item[0] == "saldo" %}
+                        <dt>{{ item[0] }} </dt>
+                            wartość: {{ item[1][0] }}<br>
+                            komentarz: {{item[1][1] }}
+                    {% else %}
+                        <dt>{{ item[0] }} </dt>
+                        Nazwa produktu: {{ item[1][0] }}<br>
+                        Cena jednostkowa: {{item[1][1] }}<br>
+                        Liczba sztuk {{ item[1][2] }}
+                    {% endif %}
+                    {% block loop_item %}{{ item }}{% endblock %}
+                    </dl></p>
                 {% endif %}
-                {% block loop_item %}{{ item }}{% endblock %}
-            </dl>
-            </p>
             {% set count = count + 1 %}
             {% endfor %}
             </dl>
