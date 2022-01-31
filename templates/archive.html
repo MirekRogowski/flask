@@ -1,10 +1,9 @@
 {% extends 'layout.html' %}
 {% block content %}
-
+    {% if log %}
       <h3>Operacje wykonane w magazynie:</h3>
 
             <dl>
-            {% set count = 1 %}
             {% for item in log %}
                 {% if  line_from <= loop.index <= line_to %}
                     <p><dl>
@@ -22,9 +21,11 @@
                     {% block loop_item %}{{ item }}{% endblock %}
                     </dl></p>
                 {% endif %}
-            {% set count = count + 1 %}
-            {% endfor %}
+           {% endfor %}
             </dl>
+    {% else %}
+        <h3>Brak logu</h3>
+    {% endif %}
 
 
 
