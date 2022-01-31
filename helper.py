@@ -9,7 +9,7 @@ class Manager:
         self.warehouse = {}
         self.logs = []
         self.data = []
-        self.error = []
+        self.error = ""
         self.actions = {}
         self.action_param = {}
         self.read_data_from_file("file.txt")
@@ -38,6 +38,11 @@ class Manager:
                 for item in line[1]:
                     f.write(f"{item}\n")
 
+    def write_error_to_file(self):
+        with open("error.txt", "a") as e:
+            for line in self.error:
+                e.write(f"\n{datetime.datetime.now().strftime('%Y-%m-%d - %H:%M:%S')} - {line}")
+
     def check_warehouse(self, product, quantity):
         if product in self.warehouse:
             self.warehouse[product] += quantity  # add quantity to warehouse
@@ -63,6 +68,16 @@ class Manager:
                 return f"Pusty plik"
 
 
+    def print_info(self, action):
+        print(f"{action} - balance: ", self.balance)
+        print(f"{action} - warehouse: ", self.warehouse)
+        print(f"{action} - logs: ", self.logs)
+        print(f"{action} - data: ", self.data , type(self.data))
+        print(f"{action} - error: ", self.error)
+        print(f"{action} - actions: ", self.actions)
+        print(f"{action} - action_param: ", self.action_param )
+
+
 manager = Manager()
 
 
@@ -70,19 +85,21 @@ manager = Manager()
 def balance_update_data(balance, comment):
     if manager.balance + balance >= 0:
         manager.balance += balance
-        manager.logs.append(["saldo", [balance, comment]])
+        return manager.logs.append(["saldo", [balance, comment]])
     else:
-        manager.error.append(["saldo", [balance, comment]])
-        print(f"Za małe saldo du wykonania operacji:"
-              f"\npotrzebujesz {balance + manager.balance} jest {manager.balance}")
+        manager.error = f"Za małe saldo  do wykonania operacji: brakuje " \
+                        f"{abs(balance + manager.balance)} by zrealizować wpłatę."
+        return manager.error
 
 
 @manager.assign("zakup", 3)
 def buy_update_data(product, price, quantity):
     if manager.balance <= 0:
-        return manager.error.append(f"Saldo wynosi: {manager.balance}. Nie można kupić towaru")
+        manager.error = f"Saldo wynosi: {manager.balance}. Nie można kupić towaru"
+        return manager.error
     if price * quantity > manager.balance:
-        return manager.error.append(f"Nie mozna zakupić {product}: {quantity} sztuk. Za małe saldo: {manager.balance}")
+        manager.error = f"Nie mozna zakupić {product}: {quantity} sztuk. Za małe saldo: {manager.balance}"
+        return manager.error
     if price * quantity <= manager.balance:
         manager.balance -= price * quantity
         manager.check_warehouse(product, quantity)
@@ -92,16 +109,19 @@ def buy_update_data(product, price, quantity):
 @manager.assign("sprzedaz", 3)
 def sale_update_data(product, price, quantity):
     if not manager.warehouse:
-        return manager.error.append(f"Magazyn jest pusty proszę zakupic towar.")
+        manager.error = f"Magazyn jest pusty proszę zakupic towar."
+        return manager.error
     if product in manager.warehouse:
         if manager.warehouse[product] - quantity < 0:
-            return manager.error.append(f"Chcesz sprzedac {product}: {quantity} sztuk. "
+            manager.error = (f"Chcesz sprzedac {product}: {quantity} sztuk. "
                   f"W magazynie jest: {manager.warehouse[product]} ")
+            return manager.error
         manager.balance += price * quantity
         manager.warehouse[product] -= quantity
         return manager.logs.append(["sprzedaz", [product, price, quantity]])
     else:
-        return manager.error.append(f"Nie ma w magazynie: {product} ")
+        manager.error = f"Nie ma w magazynie:\n {product}"
+        return manager.error
 
 
 @manager.assign("magazyn")
@@ -112,6 +132,21 @@ def status_warehouse(item_store):
             print(f"  - {item} : {manager.warehouse[item]} sztuk")
         else:
             print(f"  - {item} : brak poyzcji w magazynie")
+
+
+@manager.assign("konto")
+def check_balance():
+    print(f"\nStan konta wynosi: {manager.balance} ")
+
+
+@manager.assign("przeglad")
+def display_log(first, last):
+    try:
+        while first <= last:
+            print(f"Akcja nr {first} - {manager.logs[first - 1]}")
+            first += 1
+    except IndexError:
+        print("Koniec")
 
 
 manager.transform_data()
