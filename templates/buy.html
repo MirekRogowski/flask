@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <div>
+        <h3>Formularz zakupu:</h3>
+        <form method="post" action='/buy_response'>
+            <fieldset class ="form-ggroup">
+                    <label class="form-label">Nazwa produktu:</label>
+                    <input class="form-control" type="text" name="item"  placeholder="wpisz nazwę produktu">
+                    <label class="form-label">Cena jednostkowa:</label>
+                    <input class="form-control" type="number"  name="price" placeholder="wpisz cenę jednostkowa">
+                    <label class="form-label">Liczba sztuk:</label>
+                    <input class="form-control" type="number" name="quantity" placeholder="wpisz liczbę sztuk"><br>
+                    <button type="submit" class="btn btn-secondary">Kupno</button>
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}
