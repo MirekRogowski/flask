@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <div >
+        <h3>Formularz zmiany salda:</h3>
+        <form method="post" action='/balance_response'>
+            <fieldset class ="form-ggroup">
+                    <label class="form-label">Wartość:</label>
+                    <input class="form-control" type="number" name="income" placeholder="wpisz wartość">
+                    <label class="form-label">Komentarz:</label>
+                    <input class="form-control" type="text" name="comment" placeholder="wpisz komentarz"><br>
+                    <button type="submit" class="btn btn-secondary">Wprowadź saldo</button>
+
+             </fieldset>
+        </form>
+    </div>
+    <br><br>
+
+{% endblock %}
