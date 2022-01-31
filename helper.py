@@ -12,7 +12,7 @@ class Manager:
         self.error = ""
         self.actions = {}
         self.action_param = {}
-        self.read_data_from_file("file.txt")
+
 
     def assign(self, action, action_qty=0):
         def decorate(callback):
@@ -79,7 +79,10 @@ class Manager:
 
 
 manager = Manager()
-
+try:
+    manager.read_data_from_file("file.txt")
+except:
+    manager.error = f"Brak pliku file.txt"
 
 @manager.assign("saldo", 2)
 def balance_update_data(balance, comment):
@@ -88,7 +91,7 @@ def balance_update_data(balance, comment):
         return manager.logs.append(["saldo", [balance, comment]])
     else:
         manager.error = f"Za małe saldo  do wykonania operacji: brakuje " \
-                        f"{abs(balance + manager.balance)} by zrealizować wpłatę."
+                        f"{abs(balance + manager.balance)} zł by zrealizować wpłatę."
         return manager.error
 
 
