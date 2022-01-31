@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <div>
+    {% if error %}
+        <h3>Wprowadzono złe dane</h3>
+        {{ error }}
+    {% else %}
+        <h3>Zmiana salda: </h3>
+        {{ income }} zł<br>
+        Opreacja: {{ comment }}
+    {% endif %}
+    <br>
+    <br>
+    <h3>Stan magazynu:</h3>
+    {% for key, value in cargo.items() %}
+        {% if value > 0 %}
+            <option value="{{ key }}">{{ key }} -  {{ value }} szt.</option>
+        {% endif %}
+    {% endfor %}
+    <br><br>
+    <h3>Stan konta:</h3>
+    {{ balance }} zł
+    <br><br>
+    <form action='/saldo'>
+    <button type="submit" class="btn btn-secondary">Powrót</button>
+    </form>
+{% endblock %}
